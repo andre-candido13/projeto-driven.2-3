@@ -19,9 +19,10 @@ async function checkEnrollment (userId: number) {
       }
 
       return [enrollment, ticket]
+
+      
     }
-    
- 
+
 async function getHotels (userId: number) {
 
     await checkEnrollment(userId);
