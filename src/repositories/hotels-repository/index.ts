@@ -1,8 +1,5 @@
 import { prisma } from "@/config";
 
-
-
-
 async function findHotels () {
 
 return prisma.hotel.findMany();
@@ -20,12 +17,6 @@ async function getHotelWithRooms (hotelId: number) {
         }
     })
 }
-
-
-
-
-
-
 
 
 const hotelsRepository = {

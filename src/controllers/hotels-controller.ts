@@ -1,26 +1,24 @@
 import { AuthenticatedRequest } from "@/middlewares";
-import { Response } from "express";
+import { NextFunction, Response } from "express";
 import  httpStatus  from "http-status";
 import hotelsService from "@/services/hotels-service.ts";
 
 
 
-export async function getHotels (req: AuthenticatedRequest, res: Response) {
+export async function getHotels (req: AuthenticatedRequest, res: Response, next: NextFunction) {
 
   const userId = req.userId
 try {
     const hotels = await hotelsService.getHotels(userId)
     return res.status(httpStatus.OK).send(hotels);
   } catch (error) {
-    if (error.name === 'NotFoundError') return res.sendStatus(httpStatus.NOT_FOUND);
-    if (error.name === 'CannotShowHotelsError') return res.sendStatus(httpStatus.PAYMENT_REQUIRED);
-    return res.status(httpStatus.BAD_REQUEST).send(error);
+   next();
   
 }
 }
 
 
-export async function getHotelById(req: AuthenticatedRequest, res: Response) {
+export async function getHotelById(req: AuthenticatedRequest, res: Response, next: NextFunction) {
 try {
   const userId = req.userId
   const hotelId = req.params
@@ -29,10 +27,7 @@ try {
 
   return res.status(httpStatus.OK).send(getHotel);
 } catch (error) {
-  if (error.name === 'NotFoundError') return res.sendStatus(httpStatus.NOT_FOUND);
-  if (error.name === 'CannotShowHotelsError') return res.sendStatus(httpStatus.PAYMENT_REQUIRED);
-  return res.status(httpStatus.BAD_REQUEST).send(error);
-
+ next()
 }
 }
 
