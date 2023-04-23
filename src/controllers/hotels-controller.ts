@@ -12,12 +12,10 @@ try {
     const hotels = await hotelsService.getHotels(userId)
     return res.status(httpStatus.OK).send(hotels);
   } catch (error) {
-    if (error.name === 'NotFoundError') {
-      return res.sendStatus(httpStatus.NOT_FOUND);
-  }
-  if (error.name === 'CannotShowHotelsError') {
-    return res.sendStatus(httpStatus.PAYMENT_REQUIRED);
-  }
+    if (error.name === 'NotFoundError') res.sendStatus(httpStatus.NOT_FOUND);
+  
+  if (error.name === 'CannotShowHotelsError') res.sendStatus(httpStatus.PAYMENT_REQUIRED);
+  
 }
 }
 
@@ -31,10 +29,12 @@ try {
 
   return res.status(httpStatus.OK).send(getHotel);
 } catch (error) {
-  return res.sendStatus(httpStatus.NO_CONTENT);
-}
-}
+  if (error.name === 'NotFoundError') res.sendStatus(httpStatus.NOT_FOUND);
 
+if (error.name === 'CannotShowHotelsError') res.sendStatus(httpStatus.PAYMENT_REQUIRED);
+
+}
+}
 
 
 
