@@ -14,7 +14,7 @@ async function checkEnrollment (userId: number) {
     const ticket = await ticketsRepository.findTicketByEnrollmentId(enrollment.id);
     if (!ticket) throw notFoundError();
 
-    if (ticket.status !== 'PAID' || ticket.TicketType.isRemote === false|| ticket.TicketType.includesHotel === true) {
+    if (ticket.status !== 'PAID' || ticket.TicketType.isRemote === true|| ticket.TicketType.includesHotel === false) {
         throw paymentRequiredError();
       }
 
