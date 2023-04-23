@@ -1,8 +1,8 @@
 import { notFoundError, unauthorizedError } from "@/errors"
 import enrollmentRepository from "@/repositories/enrollment-repository";
-import hotelsRepository from "@/repositories/hotels-repository";
+import hotelsRepository from "@/repositories/hotels-repository.ts";
 import ticketsRepository from "@/repositories/tickets-repository";
-import { cannotShowHotels } from "@/errors";
+import { paymentRequiredError } from "@/errors";
 
 
 async function checkEnrollment (userId: number) {
@@ -14,14 +14,14 @@ async function checkEnrollment (userId: number) {
     const ticket = await ticketsRepository.findTicketByEnrollmentId(enrollment.id);
     if (!ticket) throw notFoundError();
 
-    if (ticket.status !== 'PAID' || ticket.TicketType.isRemote || !ticket.TicketType.includesHotel) {
-        throw cannotShowHotels();
+    if (ticket.status !== 'PAID' || ticket.TicketType.isRemote === false|| ticket.TicketType.includesHotel === true) {
+        throw paymentRequiredError();
       }
+
+      return [enrollment, ticket]
     }
     
  
-
-
 async function getHotels (userId: number) {
 
     await checkEnrollment(userId);

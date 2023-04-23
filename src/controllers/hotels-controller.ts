@@ -12,7 +12,7 @@ try {
     const hotels = await hotelsService.getHotels(userId)
     return res.status(httpStatus.OK).send(hotels);
   } catch (error) {
-   next();
+   next(error);
   
 }
 }
@@ -27,7 +27,7 @@ try {
 
   return res.status(httpStatus.OK).send(getHotel);
 } catch (error) {
- next()
+ next(error)
 }
 }
 
