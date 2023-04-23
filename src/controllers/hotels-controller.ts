@@ -19,11 +19,13 @@ try {
 
 
 export async function getHotelById(req: AuthenticatedRequest, res: Response, next: NextFunction) {
-try {
-  const userId = req.userId
-  const hotelId = req.params
-
-  const getHotel = await hotelsService.getHotelById(Number(userId), Number(hotelId))
+  const {userId} = req
+  const {hotelId} = req.params
+  
+  if (!hotelId) return res.sendStatus(httpStatus.BAD_REQUEST);
+  
+  try {
+  const getHotel = await hotelsService.getHotelById(Number(hotelId), userId)
 
   return res.status(httpStatus.OK).send(getHotel);
 } catch (error) {
