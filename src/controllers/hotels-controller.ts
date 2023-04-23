@@ -9,7 +9,7 @@ export async function getHotels (req: AuthenticatedRequest, res: Response) {
 
   const userId = req.userId
 try {
-    const hotels = await hotelsService.getHotels(Number(userId))
+    const hotels = await hotelsService.getHotels(userId)
     return res.status(httpStatus.OK).send(hotels);
   } catch (error) {
     if (error.name === 'NotFoundError') {
