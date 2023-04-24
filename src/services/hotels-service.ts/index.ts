@@ -10,7 +10,7 @@ async function checkEnrollment (userId: number) {
 
     const enrollment = await enrollmentRepository.findWithAddressByUserId(userId)
     if (!enrollment) throw notFoundError();
-    //if (enrollment.userId !== userId) throw unauthorizedError();
+
 
     const ticket = await ticketsRepository.findTicketByEnrollmentId(enrollment.id);
     if (!ticket) throw notFoundError();

@@ -29,6 +29,7 @@ export async function getHotelById(req: AuthenticatedRequest, res: Response, nex
 } catch (error) {
  next(error)
 }
+
 }
 
 
