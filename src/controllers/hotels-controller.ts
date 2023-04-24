@@ -7,7 +7,7 @@ import hotelsService from "@/services/hotels-service.ts";
 
 export async function getHotels (req: AuthenticatedRequest, res: Response, next: NextFunction) {
 
-  const userId = req.userId
+  const { userId } = req
 try {
     const hotels = await hotelsService.getHotels(userId)
     return res.status(httpStatus.OK).send(hotels);
@@ -19,13 +19,11 @@ try {
 
 
 export async function getHotelById(req: AuthenticatedRequest, res: Response, next: NextFunction) {
-  const {userId} = req
-  const {hotelId} = req.params
-  
-  if (!hotelId) return res.sendStatus(httpStatus.BAD_REQUEST);
+  const { userId } = req
+  const { hotelId } = req.params 
   
   try {
-  const getHotel = await hotelsService.getHotelById(Number(hotelId), userId)
+  const getHotel = await hotelsService.getHotelById(hotelId, userId)
 
   return res.status(httpStatus.OK).send(getHotel);
 } catch (error) {

@@ -3,13 +3,14 @@ import enrollmentRepository from "@/repositories/enrollment-repository";
 import hotelsRepository from "@/repositories/hotels-repository.ts";
 import ticketsRepository from "@/repositories/tickets-repository";
 import { paymentRequiredError } from "@/errors";
+import { Hotel, Room } from "@prisma/client";
 
 
 async function checkEnrollment (userId: number) {
 
     const enrollment = await enrollmentRepository.findWithAddressByUserId(userId)
     if (!enrollment) throw notFoundError();
-    if (enrollment.userId !== userId) throw unauthorizedError();
+    //if (enrollment.userId !== userId) throw unauthorizedError();
 
     const ticket = await ticketsRepository.findTicketByEnrollmentId(enrollment.id);
     if (!ticket) throw notFoundError();
@@ -34,11 +35,13 @@ async function getHotels (userId: number) {
   }
 
 
-async function getHotelById (userId: number, hotelId: number) {
+async function getHotelById (hotelId: string, userId: number): Promise<Hotel & { Rooms: Room[] }>  {
+
+  const IdHotel = Number(hotelId)
 
 await checkEnrollment(userId)
 
-const getHotelWithRooms = await hotelsRepository.getHotelWithRooms(hotelId);
+const getHotelWithRooms = await hotelsRepository.getHotelWithRooms(IdHotel);
 if (!getHotelWithRooms) throw notFoundError();
 
 return getHotelWithRooms
